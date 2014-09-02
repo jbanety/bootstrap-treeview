@@ -46,10 +46,10 @@
 
         levels: 2,
 
-        expandIcon: 'glyphicon glyphicon-plus',
-        collapseIcon: 'glyphicon glyphicon-minus',
-        emptyIcon: 'glyphicon',
-        nodeIcon: 'glyphicon glyphicon-stop',
+        expandIcon: 'fa fa-plus-square-o',
+        collapseIcon: 'fa fa-minus-square-o',
+        emptyIcon: 'fa fa-square-o',
+        nodeIcon: 'fa fa-square',
 
         color: undefined, // '#000000',
         backColor: undefined, // '#FFFFFF',
