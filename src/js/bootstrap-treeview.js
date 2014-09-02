@@ -35,7 +35,7 @@
 
         this.tree = [];
         this.nodes = [];
-        this.selectedNode = null;
+        this.selectedNodes = [];
 
         this._init(options);
     };
@@ -187,14 +187,14 @@
                 return;
             }
 
-            if (node === this.selectedNode) {
+            var pos = $.inArray(node, this.selectedNodes);
+
+            if (pos >= 0) {
                 this._triggerNodeUnselectedEvent(node);
-                this.selectedNode = null;
+                this.selectedNodes.splice(pos, 1);
             } else {
-                if (this.selectedNode) {
-                    this._triggerNodeUnselectedEvent(this.selectedNode);
-                }
-                this._triggerNodeSelectedEvent(this.selectedNode = node);
+                this._triggerNodeSelectedEvent(node);
+                this.selectedNodes.push(node);
             }
 
             this._render();
@@ -284,7 +284,7 @@
                 node.nodeId = self.nodes.length;
                 self.nodes.push(node);
 
-                var treeItem = $(self._template.item).addClass('node-' + self._elementId).addClass((node === self.selectedNode) ? 'node-selected' : '').attr('data-nodeid', node.nodeId).attr('style', self._buildStyleOverride(node));
+                var treeItem = $(self._template.item).addClass('node-' + self._elementId).addClass(($.inArray(node, self.selectedNodes) >= 0) ? 'node-selected' : '').attr('data-nodeid', node.nodeId).attr('style', self._buildStyleOverride(node));
 
                 // Add indent/spacer to mimic tree structure
                 for (var i = 0; i < (level - 1); i++) {
@@ -336,13 +336,13 @@
         _buildStyleOverride: function(node) {
 
             var style = '';
-            if (this.options.highlightSelected && (node === this.selectedNode)) {
+            if (this.options.highlightSelected && ($.inArray(node, this.selectedNodes) >= 0)) {
                 style += 'color:' + this.options.selectedColor + ';';
             } else if (node.color) {
                 style += 'color:' + node.color + ';';
             }
 
-            if (this.options.highlightSelected && (node === this.selectedNode)) {
+            if (this.options.highlightSelected && ($.inArray(node, this.selectedNodes) >= 0)) {
                 style += 'background-color:' + this.options.selectedBackColor + ';';
             } else if (node.backColor) {
                 style += 'background-color:' + node.backColor + ';';
