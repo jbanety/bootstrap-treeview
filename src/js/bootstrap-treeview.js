@@ -107,6 +107,7 @@
 
             this._setInitialLevels(this.tree, 0);
 
+            this._setInitialSelectedNodes(this.tree);
             this._destroy();
             this._subscribeEvents();
             this._render();
@@ -138,8 +139,7 @@
                 event.preventDefault();
             }
 
-            var target = $(event.target), classList = target.attr('class') ? target.attr('class').split(' ') :
-                [], node = this._findNode(target);
+            var target = $(event.target), classList = target.attr('class') ? target.attr('class').split(' ') : [], node = this._findNode(target);
 
             if ((classList.indexOf('click-expand') != -1) || (classList.indexOf('click-collapse') != -1)) {
                 // Expand or collapse node by toggling child node visibility
@@ -198,6 +198,22 @@
             }
 
             this._render();
+        },
+
+        _setInitialSelectedNodes: function(nodes) {
+
+            var self = this;
+
+            $.each(nodes, function(id, node) {
+                if (node.selected) {
+                    self.selectedNodes.push(node);
+                }
+                var nodes = node.nodes ? node.nodes : node._nodes ? node._nodes : undefined;
+                if (nodes) {
+                    return self._setInitialSelectedNodes(nodes);
+                }
+            });
+
         },
 
         // On initialization recurses the entire tree structure
