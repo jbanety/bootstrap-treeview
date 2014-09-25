@@ -170,13 +170,13 @@
         // Actually triggers the nodeSelected event
         _triggerNodeSelectedEvent: function(node) {
 
-            this.$element.trigger('nodeSelected', [$.extend(true, {}, node)]);
+            this.$element.trigger('nodeSelected', [$.extend(true, {}, node), this.selectedNodes]);
         },
 
         // Actually triggers the nodeUnselected event
         _triggerNodeUnselectedEvent: function(node) {
 
-            this.$element.trigger('nodeUnselected', [$.extend(true, {}, node)]);
+            this.$element.trigger('nodeUnselected', [$.extend(true, {}, node), this.selectedNodes]);
         },
 
         // Handles selecting and unselecting of nodes,
@@ -190,11 +190,11 @@
             var pos = $.inArray(node, this.selectedNodes);
 
             if (pos >= 0) {
-                this._triggerNodeUnselectedEvent(node);
                 this.selectedNodes.splice(pos, 1);
+                this._triggerNodeUnselectedEvent(node);
             } else {
-                this._triggerNodeSelectedEvent(node);
                 this.selectedNodes.push(node);
+                this._triggerNodeSelectedEvent(node);
             }
 
             this._render();
